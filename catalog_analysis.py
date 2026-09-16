@@ -179,3 +179,40 @@ def top_n_by_rating(movies: list[dict], n: int = 3) -> list:
     # return [(x["title"], x["rating"]) for x in titles_sorted_by_rating(movies)[:n]]
     sorted_movies = sorted(movies, key=lambda x: x["rating"], reverse=True)
     return [(x["title"], x["rating"]) for x in sorted_movies[:n]]
+
+# Этап 6. Словари
+
+def count_by_genre(movies: list[dict]) -> dict:
+    """
+    Функция возвращающая словарь {жанр: количество фильмов}
+        из списка movies через цикл for
+    :param: list[dict] -> списка movies
+    :return: словарь {жанр: количество фильмов}
+    """
+    all_genres = {}
+    for m in movies:
+        for genre in m.get("genres"):
+            if genre in all_genres:
+                all_genres[genre] += 1
+            else:
+                all_genres[genre] = 1
+    return all_genres
+def actor_filmography(movies: list[dict]) -> dict:
+    """
+    Функция возвращающая словарь
+        {актер: [список названий фильмов]}
+    :param: list[dict] -> списка movies
+    :return: словарь {актер: [список названий фильмов]}
+    """
+    actor_film={}
+    for m in movies:
+        for genre in m.get("actors"):
+            if genre in actor_film:
+                actor_film[genre].append(m.get("title"))
+            else:
+                actor_film[genre] = list()
+                actor_film[genre].append(m.get("title"))
+    return actor_film
+
+dict_comprehension = {m['title']:m['rating'] for m in movies if m['rating'] > average_rating(movies)}
+
