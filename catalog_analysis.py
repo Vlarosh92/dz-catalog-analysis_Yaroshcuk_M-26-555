@@ -216,3 +216,39 @@ def actor_filmography(movies: list[dict]) -> dict:
 
 dict_comprehension = {m['title']:m['rating'] for m in movies if m['rating'] > average_rating(movies)}
 
+# Этап 7. Множества
+
+def all_genres(movies: list[dict]) -> set:
+    """
+    Функция возвращающая множество всех уникальных жанров каталога
+    :param: list[dict] -> списка movies
+    :return: множество всех жанров
+    """
+    all_genres = set()
+    for m in movies:
+        all_genres |= set(m.get("genres"))
+    return all_genres
+
+def common_actors(movie_1: dict, movie_2: dict) -> set:
+    """
+    Функция возвращающая множество актеров,
+        снимавшихся в обоих фильмах
+    :param: dict -> movie_1 фильм первый
+        dict -> movie_2 фильм второй
+    :return: множество всех актеров
+    """
+    return set(movie_1.get("actors")) & set(movie_2.get("actors"))
+
+def genres_only_in_one(movies_a: list[dict], movies_b: list[dict]) -> set:
+    """
+        Функция возвращающая жанры, встречающиеся в movies_a,
+            но не встречающиеся в movies_b
+        :param: list[dict] -> movies_a влючения
+            list[dict] -> movies_b исключения
+        :return: множество жанров
+        """
+
+    set_a = {x for m in movies_a for x in set(m.get("genres"))}
+    set_b = {x for m in movies_b for x in set(m.get("genres"))}
+    return set_a - set_b
+
