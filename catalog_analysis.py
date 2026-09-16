@@ -22,10 +22,14 @@ movies = [
     {"title": "Red Harbor", "year": 2018, "genres": {"action", "thriller"},
      "rating": 7.3, "duration_min": 129, "actors": ["P. Diaz", "T. Chalamet"]},
 ]
+
+
+#Этап 1. Разминка: переменные, числа, math
+
 def average_rating(movies: list[dict]) -> float:
     """
     Функция считающая средний рейтинг по списку
-    :param movies: Список
+    :param: Список
     :return: Среднее значение рейтинга
     """
     sum = 0
@@ -38,7 +42,7 @@ def average_rating(movies: list[dict]) -> float:
 def catalog_age_stats(movies: list[dict], current_year: int = 2026) -> tuple:
     """
     Функция выдающая возраст самого старого фильма, нового, а также средний возраст
-    :param movies: Список, текущий год
+    :param: Список, текущий год
     :return: кортеж(
         самый старый фильм в годах,
         самый новый фильм в годах,
@@ -63,9 +67,43 @@ def catalog_age_stats(movies: list[dict], current_year: int = 2026) -> tuple:
 def duration_in_hours(minutes: int) -> str:
     """
     Функция переводит минуты в формат "Xч Yм"
-    :param movies: duration_min из списка
+    :param: duration_min из списка
     :return: строка в формате "Xч Yм"
     """
     hour = minutes // 60
     min = minutes % 60
     return f"{hour}ч {min}м"
+
+#Этап 2. Условия и match
+
+def rating_tier(rating: float) -> str:
+    """
+    Функция определения категории рейтинга
+    :param: float, rating из списка movies
+    :return: str, категория рейтинга
+    """
+    ret = ""
+    if rating >= 9:
+        ret = "шедевр"
+    elif rating >= 7:
+        ret = "хорошо"
+    else:
+        ret = "средне" if rating >= 5 else "слабо"
+    return ret
+
+def decade_label(year: int) -> str:
+    """
+    Функция возвращает метку по дате выхода фильма
+    :param: int, year из списка movies
+    :return: str, возрастная метку
+    """
+
+    match year:
+        case _ if year > 2020:
+            return "новые"
+        case _ if 2020 >= year >= 2015:
+            return "недавние"
+        case _:
+            return "старые"
+
+
