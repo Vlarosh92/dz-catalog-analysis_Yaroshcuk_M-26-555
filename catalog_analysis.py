@@ -155,7 +155,7 @@ def format_report_line(move: dict) -> str:
     :param: dict -> move данные фильма
     :return: строка с информацией о фильме
     """
-    return (f"{move['title']} ({move['year']}) - {move["rating"]}/10, "
+    return (f"{normalize_title(move['title'])} ({move['year']}) - {move["rating"]}/10, "
             f"{duration_in_hours(move['duration_min'])}, "
             f"жанры: {', '.join(sorted(move["genres"]))}")
 
@@ -241,14 +241,35 @@ def common_actors(movie_1: dict, movie_2: dict) -> set:
 
 def genres_only_in_one(movies_a: list[dict], movies_b: list[dict]) -> set:
     """
-        Функция возвращающая жанры, встречающиеся в movies_a,
-            но не встречающиеся в movies_b
-        :param: list[dict] -> movies_a влючения
-            list[dict] -> movies_b исключения
-        :return: множество жанров
-        """
+    Функция возвращающая жанры, встречающиеся в movies_a,
+        но не встречающиеся в movies_b
+    :param: list[dict] -> movies_a влючения
+        list[dict] -> movies_b исключения
+    :return: множество жанров
+    """
 
     set_a = {x for m in movies_a for x in set(m.get("genres"))}
     set_b = {x for m in movies_b for x in set(m.get("genres"))}
     return set_a - set_b
 
+# Этап 8. Итераторы и генераторы
+
+def iter_high_rated(movies: list[dict], min_rating: float =8.0):
+    """
+    Функция - генератор
+        которая через yield лениво отдает
+        фильмы с рейтингом не ниже min_rating
+    :param: list[dict] -> movies список фильмов
+        float -> min_rating, граница рейтинга
+    :yield: фильм с рейтингом > min_rating
+    """
+    num = 0
+    while num<len(movies):
+        if not movies[num]['rating'] < min_rating:
+            yield movies[num]
+        num += 1
+for movie in iter_high_rated(movies):
+    print(format_report_line(movie))
+
+generator = (m["duration_min"] for m in movies if m["rating"] > 7)
+print(sum(generator))
