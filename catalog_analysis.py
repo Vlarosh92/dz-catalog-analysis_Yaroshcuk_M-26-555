@@ -121,7 +121,7 @@ while num < len(movies):
 else:
     print("Шедевров не найдено")
 
-def count_long_movies(movies: list[dict], threshold: int =120) -> int:
+def count_long_movies(movies: list[dict], threshold: int = 120) -> int:
     """
     Функция считает количество фильмов длиннее threshold минут
     :param: list[dict] -> списка movies, int -> threshold ограничение времени
@@ -159,3 +159,23 @@ def format_report_line(move: dict) -> str:
             f"{duration_in_hours(move['duration_min'])}, "
             f"жанры: {', '.join(sorted(move["genres"]))}")
 
+# Этап 5. Списки
+def titles_sorted_by_rating(movies: list[dict]) -> list:
+    """
+    Функция возвращающая список названий фильмов,
+        отсортированных по убыванию рейтинга
+    :param: list[dict] -> списка movies
+    :return: список отсортированных по убыванию рейтинга фильмов
+    """
+    return sorted(movies, key=lambda x: x["rating"], reverse=True)
+def top_n_by_rating(movies: list[dict], n: int = 3) -> list:
+    """
+    Функция возвращающая список из n кортежей
+        (title, rating) — топ по рейтингу
+    :param: list[dict] -> списка movies, int -> n топ рейтинга
+    :return: n - топ рейтинга в виде кортежей
+    """
+    # как альтернативу можно использовать функцию titles_sorted_by_rating
+    # return [(x["title"], x["rating"]) for x in titles_sorted_by_rating(movies)[:n]]
+    sorted_movies = sorted(movies, key=lambda x: x["rating"], reverse=True)
+    return [(x["title"], x["rating"]) for x in sorted_movies[:n]]
