@@ -133,3 +133,29 @@ def count_long_movies(movies: list[dict], threshold: int =120) -> int:
             count += 1
     return count
 
+# Этап 4. Строки
+
+def normalize_title(title: str) -> str:
+    """
+    Функция приводящяя строку к формату Title Case
+    :param: str -> title название фильма
+    :return: название формата Title Case
+    """
+    return " ".join([word[0].upper() + word[1:] for word in title.split()])
+def make_slug(title: str) -> str:
+    """
+    Функция превращающяя нормализованное название в «слаг»
+    :param: str -> title название фильма
+    :return: название формата «слаг»
+    """
+    return title.lower().replace(" ", "-")
+def format_report_line(move: dict) -> str:
+    """
+    Функция возвращающую единую строку с описанием фильма
+    :param: dict -> move данные фильма
+    :return: строка с информацией о фильме
+    """
+    return (f"{move['title']} ({move['year']}) - {move["rating"]}/10, "
+            f"{duration_in_hours(move['duration_min'])}, "
+            f"жанры: {', '.join(sorted(move["genres"]))}")
+
