@@ -29,7 +29,7 @@ movies = [
 def average_rating(movies: list[dict]) -> float:
     """
     Функция считающая средний рейтинг по списку
-    :param: Список
+    :param: list[dict] -> Список movies
     :return: Среднее значение рейтинга
     """
     sum = 0
@@ -42,7 +42,7 @@ def average_rating(movies: list[dict]) -> float:
 def catalog_age_stats(movies: list[dict], current_year: int = 2026) -> tuple:
     """
     Функция выдающая возраст самого старого фильма, нового, а также средний возраст
-    :param: Список, текущий год
+    :param: list[dict] -> Список movies, int -> текущий год
     :return: кортеж(
         самый старый фильм в годах,
         самый новый фильм в годах,
@@ -67,7 +67,7 @@ def catalog_age_stats(movies: list[dict], current_year: int = 2026) -> tuple:
 def duration_in_hours(minutes: int) -> str:
     """
     Функция переводит минуты в формат "Xч Yм"
-    :param: duration_min из списка
+    :param: int -> duration_min из списка
     :return: строка в формате "Xч Yм"
     """
     hour = minutes // 60
@@ -79,7 +79,7 @@ def duration_in_hours(minutes: int) -> str:
 def rating_tier(rating: float) -> str:
     """
     Функция определения категории рейтинга
-    :param: float, rating из списка movies
+    :param: float -> rating из списка movies
     :return: str, категория рейтинга
     """
     ret = ""
@@ -94,7 +94,7 @@ def rating_tier(rating: float) -> str:
 def decade_label(year: int) -> str:
     """
     Функция возвращает метку по дате выхода фильма
-    :param: int, year из списка movies
+    :param: int -> year из списка movies
     :return: str, возрастная метку
     """
 
@@ -106,4 +106,30 @@ def decade_label(year: int) -> str:
         case _:
             return "старые"
 
+# Этап 3. Циклы
+
+for m in movies:
+    if "comedy" in m["genres"]:
+        continue
+    print(m["title"])
+
+num = 0
+while num < len(movies):
+    if movies[num]["rating"] > 9.0:
+        break
+    num += 1
+else:
+    print("Шедевров не найдено")
+
+def count_long_movies(movies: list[dict], threshold: int =120) -> int:
+    """
+    Функция считает количество фильмов длиннее threshold минут
+    :param: list[dict] -> списка movies, int -> threshold ограничение времени
+    :return: количество фильмов
+    """
+    count = 0
+    for m in movies:
+        if m["duration_min"] > threshold:
+            count += 1
+    return count
 
