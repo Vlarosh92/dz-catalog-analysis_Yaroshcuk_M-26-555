@@ -2,7 +2,8 @@ import math
 
 movies = [
     {"title": "The Dune Chronicles", "year": 2021, "genres": {"sci-fi", "drama"},
-     "rating": 8.6, "duration_min": 155, "actors": ["T. Chalamet", "R. Ferguson", "O. Isaac"]},
+     "rating": 8.6, "duration_min": 155,
+     "actors": ["T. Chalamet", "R. Ferguson", "O. Isaac"]},
     {"title": "Kitchen Stories", "year": 2019, "genres": {"comedy", "drama"},
      "rating": 7.1, "duration_min": 98, "actors": ["A. Novak", "M. Ferguson"]},
     {"title": "silent hours", "year": 2016, "genres": {"thriller", "drama"},
@@ -155,7 +156,7 @@ def format_report_line(move: dict) -> str:
     :param: dict -> move данные фильма
     :return: строка с информацией о фильме
     """
-    return (f"{normalize_title(move['title'])} ({move['year']}) - {move["rating"]}/10, "
+    return (f"\"{normalize_title(move['title'])}\" ({move['year']}) - {move["rating"]}/10, "
             f"{duration_in_hours(move['duration_min'])}, "
             f"жанры: {', '.join(sorted(move["genres"]))}")
 
@@ -214,7 +215,10 @@ def actor_filmography(movies: list[dict]) -> dict:
                 actor_film[genre].append(m.get("title"))
     return actor_film
 
-dict_comprehension = {m['title']:m['rating'] for m in movies if m['rating'] > average_rating(movies)}
+# разбивку строки требует ruff check
+d_compr = {m['title']:m['rating']
+           for m in movies if
+           m['rating'] > average_rating(movies)}
 
 # Этап 7. Множества
 
@@ -272,4 +276,41 @@ for movie in iter_high_rated(movies):
     print(format_report_line(movie))
 
 generator = (m["duration_min"] for m in movies if m["rating"] > 7)
-print(sum(generator))
+sum(generator)
+
+# Этап 9. Итоговый отчет
+
+def build_report(movies: list[dict]) -> None:
+    """
+    Финальный отчет
+    :param: list[dict] -> movies список фильмов
+    """
+    str_finish = ""
+    str_finish += "ОТЧЕТ ПО КАТАЛОГУ \n"
+    str_finish += ("Средний рейтинг: "
+                   + str(average_rating(movies)) + "\n")
+    str_finish += ("Средний возраст фильмов: "
+                   + str(catalog_age_stats(movies)[2])
+                   + " лет\n")
+    str_finish += "\n"
+    str_finish += "Топ-3 фильма: \n"
+
+    for m in top_n_by_rating(movies):
+        # разбивку строки требует ruff check
+        str_finish += ("  "
+                       + str([format_report_line(x)
+                              for x in movies if
+                              x["title"]==str(m[0])][0]
+                ) + "\n")
+
+    str_finish += "\n"
+    str_finish += "Фильмов по жанрам: \n"
+    vocabulary = count_by_genre(movies)
+    dictionary = dict(sorted(vocabulary.items(),
+                             key=lambda item: item[1], reverse=True))
+    for key, val in dictionary.items():
+        str_finish += "  " +  str(key) + " - " + str(val) + "\n"
+
+    str_finish += "Все жанры каталога: " + ", ".join(all_genres(movies))
+    print(str_finish)
+build_report(movies)
