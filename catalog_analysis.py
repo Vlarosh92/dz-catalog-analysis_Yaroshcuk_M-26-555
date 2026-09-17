@@ -30,8 +30,6 @@ movies = [
 def average_rating(movies: list[dict]) -> float:
     """
     Функция считающая средний рейтинг по списку
-    :param: list[dict] -> Список movies
-    :return: Среднее значение рейтинга
     """
     sum = 0
     count = len(movies)
@@ -43,11 +41,6 @@ def average_rating(movies: list[dict]) -> float:
 def catalog_age_stats(movies: list[dict], current_year: int = 2026) -> tuple:
     """
     Функция выдающая возраст самого старого фильма, нового, а также средний возраст
-    :param: list[dict] -> Список movies, int -> текущий год
-    :return: кортеж(
-        самый старый фильм в годах,
-        самый новый фильм в годах,
-        средний возраст фильмов в годах)
     """
     oldest = 0
     newest = 0
@@ -68,8 +61,6 @@ def catalog_age_stats(movies: list[dict], current_year: int = 2026) -> tuple:
 def duration_in_hours(minutes: int) -> str:
     """
     Функция переводит минуты в формат "Xч Yм"
-    :param: int -> duration_min из списка
-    :return: строка в формате "Xч Yм"
     """
     hour = minutes // 60
     min = minutes % 60
@@ -80,8 +71,6 @@ def duration_in_hours(minutes: int) -> str:
 def rating_tier(rating: float) -> str:
     """
     Функция определения категории рейтинга
-    :param: float -> rating из списка movies
-    :return: str, категория рейтинга
     """
     ret = ""
     if rating >= 9:
@@ -95,8 +84,6 @@ def rating_tier(rating: float) -> str:
 def decade_label(year: int) -> str:
     """
     Функция возвращает метку по дате выхода фильма
-    :param: int -> year из списка movies
-    :return: str, возрастная метку
     """
 
     match year:
@@ -108,25 +95,32 @@ def decade_label(year: int) -> str:
             return "старые"
 
 # Этап 3. Циклы
-
-for m in movies:
-    if "comedy" in m["genres"]:
-        continue
-    print(m["title"])
-
-num = 0
-while num < len(movies):
-    if movies[num]["rating"] > 9.0:
-        break
-    num += 1
-else:
-    print("Шедевров не найдено")
-
+def print_non_comedy_titles(movies: list[dict]) -> None:
+    """
+    Функция выводит на экран названия всех фильмов,
+        которые не относятся к жанру "comedy"
+    """
+    for m in movies:
+        if "comedy" in m["genres"]:
+            continue
+        print(m["title"])
+def find_first_masterpiece(movies: list[dict]) -> None:
+    """
+    Функция находит первый по порядку в списке фильм с
+        рейтингом выше 9.0; если такого фильма нет,
+        цикл должен завершиться веткой else
+        с сообщением "Шедевров не найдено"
+    """
+    num = 0
+    while num < len(movies):
+        if movies[num]["rating"] > 9.0:
+            break
+        num += 1
+    else:
+        print("Шедевров не найдено")
 def count_long_movies(movies: list[dict], threshold: int = 120) -> int:
     """
     Функция считает количество фильмов длиннее threshold минут
-    :param: list[dict] -> списка movies, int -> threshold ограничение времени
-    :return: количество фильмов
     """
     count = 0
     for m in movies:
@@ -139,22 +133,16 @@ def count_long_movies(movies: list[dict], threshold: int = 120) -> int:
 def normalize_title(title: str) -> str:
     """
     Функция приводящяя строку к формату Title Case
-    :param: str -> title название фильма
-    :return: название формата Title Case
     """
     return " ".join([word[0].upper() + word[1:] for word in title.split()])
 def make_slug(title: str) -> str:
     """
     Функция превращающяя нормализованное название в «слаг»
-    :param: str -> title название фильма
-    :return: название формата «слаг»
     """
     return title.lower().replace(" ", "-")
 def format_report_line(move: dict) -> str:
     """
     Функция возвращающую единую строку с описанием фильма
-    :param: dict -> move данные фильма
-    :return: строка с информацией о фильме
     """
     return (f"\"{normalize_title(move['title'])}\" ({move['year']}) - {move["rating"]}/10, "
             f"{duration_in_hours(move['duration_min'])}, "
@@ -165,16 +153,12 @@ def titles_sorted_by_rating(movies: list[dict]) -> list:
     """
     Функция возвращающая список названий фильмов,
         отсортированных по убыванию рейтинга
-    :param: list[dict] -> списка movies
-    :return: список отсортированных по убыванию рейтинга фильмов
     """
     return sorted(movies, key=lambda x: x["rating"], reverse=True)
 def top_n_by_rating(movies: list[dict], n: int = 3) -> list:
     """
     Функция возвращающая список из n кортежей
         (title, rating) — топ по рейтингу
-    :param: list[dict] -> списка movies, int -> n топ рейтинга
-    :return: n - топ рейтинга в виде кортежей
     """
     # как альтернативу можно использовать функцию titles_sorted_by_rating
     # return [(x["title"], x["rating"]) for x in titles_sorted_by_rating(movies)[:n]]
@@ -187,8 +171,6 @@ def count_by_genre(movies: list[dict]) -> dict:
     """
     Функция возвращающая словарь {жанр: количество фильмов}
         из списка movies через цикл for
-    :param: list[dict] -> списка movies
-    :return: словарь {жанр: количество фильмов}
     """
     all_genres = {}
     for m in movies:
@@ -202,8 +184,6 @@ def actor_filmography(movies: list[dict]) -> dict:
     """
     Функция возвращающая словарь
         {актер: [список названий фильмов]}
-    :param: list[dict] -> списка movies
-    :return: словарь {актер: [список названий фильмов]}
     """
     actor_film={}
     for m in movies:
@@ -225,8 +205,6 @@ d_compr = {m['title']:m['rating']
 def all_genres(movies: list[dict]) -> set:
     """
     Функция возвращающая множество всех уникальных жанров каталога
-    :param: list[dict] -> списка movies
-    :return: множество всех жанров
     """
     all_genres = set()
     for m in movies:
@@ -237,9 +215,6 @@ def common_actors(movie_1: dict, movie_2: dict) -> set:
     """
     Функция возвращающая множество актеров,
         снимавшихся в обоих фильмах
-    :param: dict -> movie_1 фильм первый
-        dict -> movie_2 фильм второй
-    :return: множество всех актеров
     """
     return set(movie_1.get("actors")) & set(movie_2.get("actors"))
 
@@ -247,9 +222,6 @@ def genres_only_in_one(movies_a: list[dict], movies_b: list[dict]) -> set:
     """
     Функция возвращающая жанры, встречающиеся в movies_a,
         но не встречающиеся в movies_b
-    :param: list[dict] -> movies_a влючения
-        list[dict] -> movies_b исключения
-    :return: множество жанров
     """
 
     set_a = {x for m in movies_a for x in set(m.get("genres"))}
@@ -263,30 +235,36 @@ def iter_high_rated(movies: list[dict], min_rating: float =8.0):
     Функция - генератор
         которая через yield лениво отдает
         фильмы с рейтингом не ниже min_rating
-    :param: list[dict] -> movies список фильмов
-        float -> min_rating, граница рейтинга
-    :yield: фильм с рейтингом > min_rating
     """
     num = 0
     while num<len(movies):
         if not movies[num]['rating'] < min_rating:
             yield movies[num]
         num += 1
-for movie in iter_high_rated(movies):
-    print(format_report_line(movie))
-
-generator = (m["duration_min"] for m in movies if m["rating"] > 7)
-sum(generator)
+def fun_print_iter_result(movies: list[dict]) -> None:
+    """
+    Функция - выдающая через цикл for результат
+        работы функции-генератора iter_high_rated
+        используя функцию format_report_line
+    """
+    for movie in iter_high_rated(movies):
+        print(format_report_line(movie))
+def gen_fun(movies: list[dict]) -> int:
+    """
+    Функция - создающее генераторное выражение, которое считает
+        суммарную длительность всех фильмов с рейтингом выше
+        7 в минутах, и передайте его в sum()
+    """
+    generator = (m["duration_min"] for m in movies if m["rating"] > 7)
+    return sum(generator)
 
 # Этап 9. Итоговый отчет
 
 def build_report(movies: list[dict]) -> None:
     """
     Финальный отчет
-    :param: list[dict] -> movies список фильмов
     """
     str_finish = ""
-    str_finish += "ОТЧЕТ ПО КАТАЛОГУ \n"
     str_finish += ("Средний рейтинг: "
                    + str(average_rating(movies)) + "\n")
     str_finish += ("Средний возраст фильмов: "
@@ -313,4 +291,5 @@ def build_report(movies: list[dict]) -> None:
 
     str_finish += "Все жанры каталога: " + ", ".join(all_genres(movies))
     print(str_finish)
-build_report(movies)
+if __name__ == "__main__":
+    build_report(movies)
