@@ -144,7 +144,8 @@ def format_report_line(move: dict) -> str:
     """
     Функция возвращающую единую строку с описанием фильма
     """
-    return (f"\"{normalize_title(move['title'])}\" ({move['year']}) - {move["rating"]}/10, "
+    return (f"\"{normalize_title(move['title'])}\" "
+            f"({move['year']}) — {move["rating"]}/10, "
             f"{duration_in_hours(move['duration_min'])}, "
             f"жанры: {', '.join(sorted(move["genres"]))}")
 
@@ -287,7 +288,7 @@ def build_report(movies: list[dict]) -> None:
     dictionary = dict(sorted(vocabulary.items(),
                              key=lambda item: item[1], reverse=True))
     for key, val in dictionary.items():
-        str_finish += "  " +  str(key) + " - " + str(val) + "\n"
+        str_finish += "  " +  str(key) + " — " + str(val) + "\n"
 
     str_finish += "Все жанры каталога: " + ", ".join(all_genres(movies))
     print(str_finish)
